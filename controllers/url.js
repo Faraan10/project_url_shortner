@@ -11,7 +11,7 @@ const generateShortUrl = async (req, res) => {
   const uniqueId = shortid();
 
   if (!redirectUrl) {
-    return res.status(400).json({ msg: "url fields is required" });
+    return res.status(400).json({ msg: "url field is required" });
   }
 
   const createUrl = await URL.create({
@@ -22,18 +22,17 @@ const generateShortUrl = async (req, res) => {
   return res.status(201).json({ uniqueId });
 };
 
-const renderPageShortId = async (req, res) => {
-  const id = req.params.id;
-  console.log(id);
+const redirectUrl = async (req, res) => {
+  const shortId = req.params.shortId;
 
   const entry = await URL.findOneAndUpdate(
     {
-      id,
+      shortId,
     },
     { $push: { visitHistory: { timestamp: Date.now() } } }
   );
   console.log(entry);
-  return res.json("done");
+  return res.status(200).redirect(entry.redirectUrl);
 };
 
-module.exports = { getAllUrls, generateShortUrl, renderPageShortId };
+module.exports = { getAllUrls, generateShortUrl, redirectUrl };

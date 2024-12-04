@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
 const dotenv = require("dotenv").config();
-
 const connection = require("./dbConnection");
+const URL = require("./models/url");
 
 connection();
 

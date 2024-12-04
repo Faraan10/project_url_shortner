@@ -3,10 +3,10 @@ const router = express();
 const {
   getAllUrls,
   generateShortUrl,
-  renderPageShortId,
+  redirectUrl,
 } = require("../controllers/url");
 
-router.get("/", getAllUrls).get("/:id", renderPageShortId);
+router.get("/", getAllUrls).get("/:shortId", redirectUrl);
 
 router.post("/", generateShortUrl);
 
