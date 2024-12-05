@@ -19,7 +19,10 @@ const generateShortUrl = async (req, res) => {
     redirectUrl: redirectUrl,
     visitHistory: [],
   });
-  return res.status(201).json({ uniqueId });
+  return res.status(200).render("home", {
+    id: uniqueId,
+  });
+  // return res.status(201).json({ uniqueId });
 };
 
 const redirectUrl = async (req, res) => {
@@ -31,8 +34,21 @@ const redirectUrl = async (req, res) => {
     },
     { $push: { visitHistory: { timestamp: Date.now() } } }
   );
-  console.log(entry);
+  // console.log(entry);
   return res.status(200).redirect(entry.redirectUrl);
 };
 
-module.exports = { getAllUrls, generateShortUrl, redirectUrl };
+const getAnalytics = async (req, res) => {
+  const shortId = await req.params.shortId;
+
+  const result = await URL.findOne({
+    shortId,
+  });
+  console.log(result);
+  return res.status(200).json({
+    totalClicks: result.visitHistory.length,
+    anlytics: result.visitHistory,
+  });
+};
+
+module.exports = { getAllUrls, generateShortUrl, redirectUrl, getAnalytics };

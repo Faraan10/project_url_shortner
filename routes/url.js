@@ -4,9 +4,13 @@ const {
   getAllUrls,
   generateShortUrl,
   redirectUrl,
+  getAnalytics,
 } = require("../controllers/url");
 
-router.get("/", getAllUrls).get("/:shortId", redirectUrl);
+router
+  .get("/", getAllUrls)
+  .get("/:shortId", redirectUrl)
+  .get("/analytics/:shortId", getAnalytics);
 
 router.post("/", generateShortUrl);
 
